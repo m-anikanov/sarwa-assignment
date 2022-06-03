@@ -12,9 +12,24 @@ function getStats (req, res) {
   const accounts = db.objects('Account').sorted('id');
   const accountsFiltered = statusQuery ? accounts.filtered(statusQuery) : accounts;
   
-  res.send({ 
-    accounts: accountsFiltered.length,
-    balance: accountsFiltered.sum('balance'),
+  const accountsByStatus = {};
+
+  accounts.forEach((acc) => {
+    if (accountsByStatus[acc.status]) {
+      accountsByStatus[acc.status]++;
+    } else {
+      accountsByStatus[acc.status] = 1;
+    }
+  });
+
+  res.send({
+    totalAccounts: accounts.length,
+    totalBalance: accounts.sum('balance'),
+    accountsByStatus,
+    filtered: {
+      accounts: accountsFiltered.length,
+      balance: accountsFiltered.sum('balance'),
+    }
   });
 };
 

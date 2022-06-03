@@ -1,7 +1,6 @@
-.statusFilter { 
+.stats { 
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  gap: 40px;
 }
 
 .name {
@@ -11,7 +10,10 @@
   margin-bottom: 10px;
 }
 
-.button {
-  text-transform: capitalize;
+.value {
+  font-family: monospace;
+  font-size: 18px;
+  line-height: 31px;
+  min-height: 31px;
   white-space: nowrap;
 }

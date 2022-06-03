@@ -4,8 +4,13 @@ import { AccountStatus, CommonSearchParams, ApiUrls } from 'common';
 export interface StatsSearchParams extends CommonSearchParams {}
 
 export interface GetStatsResponse {
-  accounts: number;
-  balance: number;
+  totalAccounts: number;
+  totalBalance: number;
+  accountsByStatus: Record<AccountStatus, number>,
+  filtered: {
+    accounts: number;
+    balance: number;
+  }
 }
 
 const fetchStats = async (params: StatsSearchParams = {}) => {
@@ -29,5 +34,9 @@ const fetchStats = async (params: StatsSearchParams = {}) => {
 export const useStats = (params: StatsSearchParams) => {
   const key = `stats-${Object.values(params)}`;
 
-  return useQuery<GetStatsResponse>(key, () => fetchStats(params));
+  return useQuery<GetStatsResponse>(
+    key, 
+    () => fetchStats(params), 
+    { keepPreviousData: true },
+  );
 }

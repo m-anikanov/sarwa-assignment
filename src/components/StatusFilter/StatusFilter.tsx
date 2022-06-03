@@ -1,36 +1,58 @@
 import React, { useCallback } from 'react';
+import { ButtonGroup, ToggleButton } from 'react-bootstrap';
 
-import { Status, AccountStatus } from 'common';
+import { AccountStatus } from 'common';
 
 import styles from './StatusFilter.module.css';
 
 interface StatusFilterProps {
   value?: AccountStatus[];
   onChange: (value: AccountStatus[]) => void;
+  options: {
+    value: AccountStatus;
+    text: string;
+  }[];
 }
 
-const statuses = Object.values(Status) as AccountStatus[];
-
-const StatusFilter: React.FC<StatusFilterProps> = ({ value, onChange }) => {
-  const onValueChange = useCallback((e: React.FormEvent<HTMLSelectElement>) => {
-    const selectNode = e.target as HTMLSelectElement;
-    const nextValue = Array.from(selectNode.options).reduce<AccountStatus[]>((acc, optNode) => {
-      if (optNode.selected) {
-        acc.push(optNode.value as AccountStatus);
-      }
-      return acc;
-    }, []);
+const StatusFilter: React.FC<StatusFilterProps> = ({ value, onChange, options }) => {
+  const onValueChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const buttonNode = e.target as HTMLInputElement;
+    const buttonValue = buttonNode.value as AccountStatus;
+    const nextValues = new Set(value);
     
-    onChange(nextValue);
-  }, [onChange]);
+    if (buttonNode?.checked) {
+      nextValues.add(buttonValue);
+    } else {
+      nextValues.delete(buttonValue)
+    }
+    
+    onChange(Array.from(nextValues));
+  }, [onChange, value]);
 
   return (
     <section className={styles.statusFilter}>
-      <select onChange={onValueChange} value={value} multiple>
-        {statuses.map((status, i) => (
-          <option value={status} key={i}>{status}</option>
-        ))}
-      </select>
+      <section className={styles.name}>Filter by status</section>
+      <ButtonGroup>
+        {options.map((opt, i) => {
+          const checked = value?.includes(opt.value);
+
+          return (
+            <ToggleButton
+              className={styles.button}
+              key={i}
+              value={opt.value}
+              id={opt.value}
+              type="checkbox"
+              variant={checked ? 'secondary' : 'outline-secondary'}
+              size="sm"
+              checked={checked}
+              onChange={onValueChange}
+            >
+              {opt.text}
+            </ToggleButton>
+          );
+        })}
+      </ButtonGroup>
     </section>
   );
 }

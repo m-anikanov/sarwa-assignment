@@ -40,6 +40,10 @@ const fetchAccountList = async (params: AccountListSearchParams = {}) => {
 export const useAccountsList = (params: AccountListSearchParams) => {
   const key = `account-list-${Object.values(params)}`;
 
-  return useQuery<GetAccountListResponse>(key, () => fetchAccountList(params));
+  return useQuery<GetAccountListResponse>(
+    key, 
+    () => fetchAccountList(params), 
+    { keepPreviousData: true },
+  );
 }
 
