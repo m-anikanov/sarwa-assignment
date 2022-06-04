@@ -25,12 +25,17 @@ const App: React.FC = () => {
   }), [searchParams]);
   const listParams: AccountListSearchParams = useMemo(() => ({
     ...commonParams,
-    offset: 5,
     limit: 20,
   }), [commonParams]);
 
   const { isLoading: isStatsLoading, data: stats, refetch: refetchStats } = useStats(commonParams);
-  const { isLoading: isAccountsLoading, data: accounts, refetch: refetchAccounts } = useAccountsList(listParams);
+  const { 
+    isLoading: isAccountsLoading, 
+    data: accounts, 
+    refetch: refetchAccounts, 
+    fetchNextPage, 
+    hasNextPage,
+  } = useAccountsList(listParams);
 
   const statusOptions = useMemo(() => Object.values(Status).map((status) => {
     const accountsCount = stats?.accountsByStatus?.[status];
@@ -83,13 +88,12 @@ const App: React.FC = () => {
           <Stats data={stats} />
         </section>
         <Row>
-          {isAccountsLoading ? (
-            <section>Loading</section>
-          ) : (
+          {accounts && (
             <AccountList 
-              accounts={accounts?.accounts}  
+              accountPages={accounts.pages}  
               onStatusChange={onStatusChange} 
               onStatusError={onStatusError}
+              onLoadMore={hasNextPage ? fetchNextPage : undefined}
             />
           )}
         </Row>

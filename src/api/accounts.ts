@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useInfiniteQuery } from 'react-query'
 
 import { AccountStatus, AccountList, CommonSearchParams, ApiUrls } from 'common';
 
@@ -9,6 +9,7 @@ export interface AccountListSearchParams extends CommonSearchParams {
 
 export interface GetAccountListResponse {
   accounts: AccountList;
+  nextOffset?: number;
 }
 
 const fetchAccountList = async (params: AccountListSearchParams = {}) => {
@@ -40,10 +41,13 @@ const fetchAccountList = async (params: AccountListSearchParams = {}) => {
 export const useAccountsList = (params: AccountListSearchParams) => {
   const key = `account-list-${Object.values(params)}`;
 
-  return useQuery<GetAccountListResponse>(
+  return useInfiniteQuery<GetAccountListResponse>(
     key, 
-    () => fetchAccountList(params), 
-    { keepPreviousData: true },
+    ({ pageParam }) => fetchAccountList({...params, offset: pageParam}), 
+    { 
+      keepPreviousData: true,
+      getNextPageParam: (lastPage) => lastPage.nextOffset
+    },
   );
 }
 
