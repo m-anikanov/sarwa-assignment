@@ -46,6 +46,6 @@ $ npm run server-dev
 
 ## Mocked data
 
-Mocked data is transfers to the local in memory database when the server is started.
+Mocked data transfers to the local in memory database on every server start.
 
 So You can replace any data in the `__mock__.json` file as you wish. And restart server then.
