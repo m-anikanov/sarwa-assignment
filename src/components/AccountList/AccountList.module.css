@@ -1,5 +1,9 @@
 .badge { 
-  text-transform: capitalize;
+  text-transform: uppercase;
+}
+
+.table tr {
+  height: 48px;
 }
 
 .table td {

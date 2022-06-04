@@ -18,7 +18,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ account, onStatusChange, 
   const { mutate: updateStatus } = useUpdateStatus(
     { id: account.id },
     {
-      onSuccess: () => onStatusChange?.(account),
+      onSuccess: (response) => onStatusChange?.(response.account),
       onError: () => onStatusError?.(account),
     }
   );

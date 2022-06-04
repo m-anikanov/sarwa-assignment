@@ -1,3 +1,8 @@
+.app {
+  max-height: 100vh;
+  overflow: auto;
+}
+
 .filters {
   padding: 20px 0;
   display: flex;

@@ -1,3 +1,6 @@
+import React from 'react';
+import { Badge } from 'react-bootstrap';
+
 export enum ApiUrls {
   STATS = '/api/stats',
   ACCOUNTS = '/api/accounts',
@@ -39,4 +42,32 @@ export const getAccountActions = (account: Account) => {
   }
 
   return [];
+}
+
+export const statusToBadge = {
+  [Status.PENDING]: 'secondary',
+  [Status.APPROVED]: 'primary',
+  [Status.FUNDED]: 'success',
+  [Status.CLOSED]: 'dark',
+}
+
+export const createToast = (account: Account, isSuccess: boolean): React.ReactNode => {
+  if (isSuccess) {
+    return (
+      <>
+        Account <b>#{account.id}</b> status changed to
+        {' '}             
+        <Badge bg={statusToBadge[account.status]}
+        >
+          {account.status.toUpperCase()}
+        </Badge>
+      </>
+    );
+  } else {
+    return (
+      <>
+        Failed to update account <b>#{account.id}</b> status
+      </>
+    );
+  }
 }

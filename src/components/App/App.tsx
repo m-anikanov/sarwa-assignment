@@ -5,8 +5,9 @@ import { Row, Navbar, Container, Nav } from 'react-bootstrap';
 import AccountList from 'components/AccountList/AccountList';
 import StatusFilter from 'components/StatusFilter/StatusFilter';
 import Stats from 'components/Stats/Stats';
-import { CommonSearchParams, AccountStatus, Account, Status } from 'common';
-
+import Toaster from 'components/Toaster/Toaster';
+import { useToastsState } from 'hooks/useToastsState';
+import { CommonSearchParams, AccountStatus, Account, Status, createToast } from 'common';
 import { useAccountsList, AccountListSearchParams } from 'api/accounts';
 import { useStats } from 'api/stats';
 import logo from './assets/sarwa-logo.svg'
@@ -16,6 +17,7 @@ import styles from './App.module.css';
 
 
 const App: React.FC = () => {
+  const [toasts, pushToast] = useToastsState();
   const [searchParams, setSearchParams] = useSearchParams({});
 
   const commonParams: CommonSearchParams = useMemo(() => ({
@@ -47,14 +49,15 @@ const App: React.FC = () => {
   const onStatusChange = useCallback((account: Account) => {
     refetchStats();
     refetchAccounts();
-  }, [refetchStats, refetchAccounts]);
+    pushToast(createToast(account, true));
+  }, [refetchStats, refetchAccounts, pushToast]);
 
   const onStatusError = useCallback((account: Account) => {
-    console.log(account);
+    pushToast(createToast(account, false));
   }, []);
 
   return (
-    <section>
+    <section className={styles.app}>
       <Navbar bg="light" expand="lg">
         <Container>
           <Navbar.Brand href="/">
@@ -91,6 +94,7 @@ const App: React.FC = () => {
           )}
         </Row>
       </Container>
+      <Toaster toasts={toasts} />
     </section>
   );
 }

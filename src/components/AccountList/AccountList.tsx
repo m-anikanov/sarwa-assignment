@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Badge } from 'react-bootstrap';
 
-import { AccountList as AccountListType, Account, Status } from 'common';
+import { AccountList as AccountListType, Account, statusToBadge } from 'common';
 import ActionButtons from 'components/ActionButtons/ActionButtons';
 
 import styles from './AccountList.module.css';
@@ -10,13 +10,6 @@ interface AccountListProps {
   accounts?: AccountListType;
   onStatusChange?: (account: Account) => void;
   onStatusError?: (account: Account) => void;
-}
-
-const statusToBadge = {
-  [Status.PENDING]: 'secondary',
-  [Status.APPROVED]: 'primary',
-  [Status.FUNDED]: 'success',
-  [Status.CLOSED]: 'dark',
 }
 
 const AccountList: React.FC<AccountListProps> = ({ accounts = [], onStatusChange, onStatusError }) => {

@@ -1,4 +1,4 @@
-import { useMutation, UseMutationOptions } from 'react-query'
+import { useMutation } from 'react-query'
 import { AccountStatus, ApiUrls, Account, Status } from 'common';
 
 export interface UpdateStatusParams {
@@ -35,8 +35,12 @@ interface SetStatusParams {
   id: number;
 }
 
+interface SetStatusResponse {
+  account: Account;
+}
+
 interface UpdateStatusOptions {
-  onSuccess: () => void;
+  onSuccess: (response: SetStatusResponse) => void;
   onError: () => void;
 }
 
