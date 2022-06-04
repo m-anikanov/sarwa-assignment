@@ -8,8 +8,8 @@ interface ToasterProps {
 const Toaster: React.FC<ToasterProps> = ({ toasts }) => {
   return (
     <ToastContainer className="p-3" position="bottom-end">
-      {toasts.map((toast) => (
-        <Toast>
+      {toasts.map((toast, i) => (
+        <Toast key={i}>
           <Toast.Body>
             {toast}
           </Toast.Body>

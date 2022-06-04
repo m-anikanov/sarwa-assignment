@@ -28,9 +28,8 @@ const App: React.FC = () => {
     limit: 20,
   }), [commonParams]);
 
-  const { isLoading: isStatsLoading, data: stats, refetch: refetchStats } = useStats(commonParams);
+  const { data: stats, refetch: refetchStats } = useStats(commonParams);
   const { 
-    isLoading: isAccountsLoading, 
     data: accounts, 
     refetch: refetchAccounts, 
     fetchNextPage, 
@@ -59,7 +58,7 @@ const App: React.FC = () => {
 
   const onStatusError = useCallback((account: Account) => {
     pushToast(createToast(account, false));
-  }, []);
+  }, [pushToast]);
 
   return (
     <section className={styles.app}>

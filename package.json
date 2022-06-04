@@ -50,6 +50,10 @@
       "react-app/jest"
     ]
   },
+  "engines" : { 
+    "npm" : ">=8.9.0",
+    "node" : ">=18.2.0"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
